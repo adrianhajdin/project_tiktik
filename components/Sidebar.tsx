@@ -9,22 +9,17 @@ import { ImCancelCircle } from 'react-icons/im';
 import SuggestedAccounts from './SuggestedAccounts';
 import Discover from './Discover';
 import Footer from './Footer';
-import useUsersStore from '../store/usersStore';
 import useAuthStore from '../store/authStore';
 import { fetchGoogleResponse } from '../utils';
 
 const Sidebar: NextPage = () => {
   const [showSidebar, setShowSidebar] = useState<Boolean>(true);
-
   const { pathname } = useRouter();
-  const { fetchSuggestedAccounts, suggestedAccounts }: any = useUsersStore();
-  const { addUser, userProfile } = useAuthStore();
+  const { addUser, userProfile, fetchAllUsers, allUsers }: any = useAuthStore();
 
-  const activeLink =
-    'flex items-center gap-3 hover:bg-primary p-3 justify-center xl:justify-start cursor-pointer font-semibold text-[#F51997] rounded';
+  const activeLink = 'flex items-center gap-3 hover:bg-primary p-3 justify-center xl:justify-start cursor-pointer font-semibold text-[#F51997] rounded';
 
-  const normalLink =
-    'flex items-center gap-3 hover:bg-primary p-3 justify-center xl:justify-start cursor-pointer font-semibold rounded';
+  const normalLink = 'flex items-center gap-3 hover:bg-primary p-3 justify-center xl:justify-start cursor-pointer font-semibold rounded';
 
   return (
     <div>
@@ -75,8 +70,8 @@ const Sidebar: NextPage = () => {
 
           <Discover />
           <SuggestedAccounts
-            fetchSuggestedAccounts={fetchSuggestedAccounts}
-            suggestedAccounts={suggestedAccounts}
+            fetchAllUsers={fetchAllUsers}
+            allUsers={allUsers}
           />
           <Footer />
         </div>

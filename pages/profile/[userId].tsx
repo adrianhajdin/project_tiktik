@@ -22,7 +22,7 @@ const Profile = ({ data }: IProps) => {
 
   const { user, userVideos, userLikedVideos } = data;
   const videos = showUserVideos ? 'border-b-2 border-black' : 'text-gray-400';
-  const liked = !setShowUserVideos ? 'border-b-2 border-black' : 'text-gray-400';
+  const liked = !showUserVideos ? 'border-b-2 border-black' : 'text-gray-400';
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -59,12 +59,6 @@ const Profile = ({ data }: IProps) => {
         </div>
       </div>
       <div>
-        <p className=' text-md text-gray-600'>
-          🔑 Hi I'm {user.userName} <br />
-          🔮 frontend web developer.
-        </p>
-      </div>
-      <div>
         <div className='flex gap-10 mb-10 mt-10 border-b-2 border-gray-200 bg-white w-full'>
           <p className={`text-xl font-semibold cursor-pointer ${videos} mt-2`} onClick={() => setShowUserVideos(true)}>
             Videos
@@ -75,8 +69,8 @@ const Profile = ({ data }: IProps) => {
         </div>
         <div className='flex gap-6 flex-wrap md:justify-start'>
           {videosList.length > 0 ? (
-            videosList.map((post: any, idx: number) => (
-              <VideoCard key={idx} post={post} profile={true} />
+            videosList.map((post: Video, idx: number) => (
+              <VideoCard key={idx} post={post} />
             ))
           ) : (
             <NoResults

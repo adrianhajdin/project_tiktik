@@ -6,19 +6,19 @@ import { MdDelete } from 'react-icons/md';
 import axios from 'axios';
 
 import useAuthStore from '../store/authStore';
-import { IUser } from '../types';
 import { BASE_URL } from '../utils';
 import { client } from '../utils/client';
+import { topics } from '../utils/constants';
 
 const Upload = () => {
   const [caption, setCaption] = useState('');
-  const [topic, setTopic] = useState<String>('cars');
+  const [topic, setTopic] = useState<String>(topics[0].name);
   const [loading, setLoading] = useState<Boolean>(false);
   const [savingPost, setSavingPost] = useState<Boolean>(false);
   const [videoAsset, setVideoAsset] = useState<SanityAssetDocument | undefined>();
   const [wrongFileType, setWrongFileType] = useState<Boolean>(false);
 
-  const userProfile: IUser | null = useAuthStore((state) => state.userProfile);
+  const userProfile: any = useAuthStore((state) => state.userProfile);
   const router = useRouter();
 
   useEffect(() => {
@@ -63,18 +63,16 @@ const Upload = () => {
             _ref: videoAsset?._id,
           },
         },
-        // @ts-ignore
         userId: userProfile?.googleId,
         postedBy: {
           _type: 'postedBy',
-          // @ts-ignore
           _ref: userProfile?.googleId,
         },
         topic,
       };
 
       await axios.post(`${BASE_URL}/api/post`, doc);
-
+        
       router.push('/');
     }
   };
@@ -92,9 +90,7 @@ const Upload = () => {
         <div>
           <div>
             <p className='text-2xl font-bold'>Upload Video</p>
-            <p className='text-md text-gray-400 mt-1'>
-              Post a video to your account
-            </p>
+            <p className='text-md text-gray-400 mt-1'>Post a video to your account</p>
           </div>
           <div className=' border-dashed rounded-xl border-4 border-gray-200 flex flex-col justify-center items-center  outline-none mt-10 w-[260px] h-[458px] p-10 cursor-pointer hover:border-red-300 hover:bg-gray-100'>
             {loading ? (
@@ -177,13 +173,13 @@ const Upload = () => {
             }}
             className='outline-none lg:w-650 border-2 border-gray-200 text-md capitalize lg:p-4 p-2 rounded cursor-pointer'
           >
-            {['comedy','gaming','food','dance','beauty','sports','animals'].map((item) => (
+            {topics.map((item) => (
               <option
-                key={item}
+                key={item.name}
                 className=' outline-none capitalize bg-white text-gray-700 text-md p-2 hover:bg-slate-300'
-                value={item}
+                value={item.name}
               >
-                {item}
+                {item.name}
               </option>
             ))}
           </select>

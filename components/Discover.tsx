@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { topics } from '../utils/topics';
+import { topics } from '../utils/constants';
 
 const Discover: NextPage = () => {
   const router = useRouter();
@@ -19,16 +19,12 @@ const Discover: NextPage = () => {
       </p>
       <div className='flex gap-3 flex-wrap'>
         {topics?.map((item) => (
-          <Link href={`/discover/${item.name}`} key={item.name}>
-            <div
-              className={topic === item.name ? activeTopicStyle : topicStyle}
-            >
+          <Link href={`/?topic=${item.name}`} key={item.name}>
+            <div className={topic === item.name ? activeTopicStyle : topicStyle}>
               <span className='font-bold text-2xl xl:text-md '>
                 {item.icon}
               </span>
-              <span
-                className={`font-medium text-md hidden xl:block capitalize`}
-              >
+              <span className={`font-medium text-md hidden xl:block capitalize`}>
                 {item.name}
               </span>
             </div>

@@ -7,23 +7,21 @@ import axios from 'axios';
 
 import NoResults from '../../components/NoResults';
 import VideoCard from '../../components/VideoCard';
-import useUsersStore from '../../store/usersStore';
+import useAuthStore from '../../store/authStore';
 import { BASE_URL } from '../../utils';
-import { IUser } from '../../types';
+import { IUser, Video } from '../../types';
 
-const Search = ({ videos }: any) => {
-  const [isAccounts, setIsAccounts] = useState(true);
-  const { suggestedAccounts }: any = useUsersStore();
+const Search = ({ videos }: { videos: Video[] }) => {
+  const [isAccounts, setIsAccounts] = useState(false);
+  const { allUsers }: { allUsers: IUser[] } = useAuthStore();
 
   const router = useRouter();
   const { searchTerm }: any = router.query;
 
   const accounts = isAccounts ? 'border-b-2 border-black' : 'text-gray-400';
   const isVideos = !isAccounts ? 'border-b-2 border-black' : 'text-gray-400';
-  const searchedAccounts = suggestedAccounts?.filter((user: IUser) =>
-    user.userName.toLowerCase().includes(searchTerm)
-  );
-
+  const searchedAccounts = allUsers?.filter((user: IUser) => user.userName.toLowerCase().includes(searchTerm));
+  
   return (
     <div className='w-full  '>
       <div className='flex gap-10 mb-10 border-b-2 border-gray-200 md:fixed z-50 bg-white w-full'>
@@ -62,9 +60,9 @@ const Search = ({ videos }: any) => {
         </div>
       ) : (
         <div className='md:mt-16 flex flex-wrap gap-6 md:justify-start '>
-          {videos.length > 0 ? (
-            videos.map((post: any, idx: number) => (
-              <VideoCard post={post} key={idx} profile />
+          {videos.length ? (
+            videos.map((post: Video, idx: number) => (
+              <VideoCard post={post} key={idx} />
             ))
           ) : (
             <NoResults text={`No Video Results for ${searchTerm}`} />

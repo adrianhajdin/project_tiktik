@@ -25,7 +25,10 @@ const Navbar = () => {
 
   const handleSearch = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    router.push(`/search/${searchValue}`);
+    
+    if(searchValue) {
+      router.push(`/search/${searchValue}`);
+    }
   };
 
   return (
@@ -71,13 +74,15 @@ const Navbar = () => {
             </Link>
             {user?.imageUrl && (
               <Link href={`/profile/${user?.googleId}`}>
-                <Image
-                  className='rounded-full cursor-pointer'
-                  src={user.imageUrl}
-                  alt='user'
-                  width={40}
-                  height={40}
-                />
+                <div>
+                  <Image
+                    className='rounded-full cursor-pointer'
+                    src={user.imageUrl}
+                    alt='user'
+                    width={40}
+                    height={40}
+                  />
+                </div>
               </Link>
             )}
             <GoogleLogout

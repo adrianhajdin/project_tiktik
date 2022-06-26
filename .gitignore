@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-sanity_database/node_modules
+sanitybackend/node_modules
 /.pnp
 .pnp.js
 

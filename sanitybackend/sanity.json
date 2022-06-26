@@ -1,10 +1,10 @@
 {
   "root": true,
   "project": {
-    "name": "tiktok_clone"
+    "name": "sanity_backend"
   },
   "api": {
-    "projectId": "kr4jrn0q",
+    "projectId": "tp4ln3j8",
     "dataset": "production"
   },
   "plugins": [

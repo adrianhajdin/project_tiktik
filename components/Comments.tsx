@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { GoVerified } from 'react-icons/go';
 
-import useUsersStore from '../store/usersStore';
+import useAuthStore from '../store/authStore';
 import NoResults from './NoResults';
 import { IUser } from '../types';
 
@@ -11,7 +11,7 @@ interface IProps {
   isPostingComment: Boolean;
   comment: string;
   setComment: Dispatch<SetStateAction<string>>;
-  addComment: (e: any) => void;
+  addComment: (e: React.FormEvent) => void;
   comments: IComment[];
 }
 
@@ -22,18 +22,8 @@ interface IComment {
   postedBy: { _ref?: string; _id?: string };
 }
 
-interface ISuggestedAccount {
-  suggestedAccounts?: IUser[];
-}
-
-const Comments = ({
-  comment,
-  setComment,
-  addComment,
-  comments,
-  isPostingComment,
-}: IProps) => {
-  const { suggestedAccounts }: ISuggestedAccount = useUsersStore();
+const Comments = ({ comment, setComment, addComment, comments, isPostingComment }: IProps) => {
+  const { allUsers, userProfile }: any = useAuthStore();
 
   return (
     <div className='border-t-2 border-gray-200 pt-4 px-10 mt-4 bg-[#F8F8F8] border-b-2 lg:pb-0 pb-[100px]'>
@@ -41,7 +31,7 @@ const Comments = ({
         {comments?.length > 0 ? (
           comments?.map((item: IComment, idx: number) => (
             <>
-              {suggestedAccounts?.map(
+              {allUsers?.map(
                 (user: IUser) =>
                   user._id === (item.postedBy._ref || item.postedBy._id) && (
                     <div className=' p-2 items-center' key={idx}>
@@ -78,7 +68,7 @@ const Comments = ({
           <NoResults text='No Comments Yet! Be First to do add the comment.' />
         )}
       </div>
-      <div className='absolute bottom-0 left-0  pb-6 px-2 md:px-10 '>
+     {userProfile && <div className='absolute bottom-0 left-0  pb-6 px-2 md:px-10 '>
         <form onSubmit={addComment} className='flex gap-4'>
           <input
             value={comment}
@@ -90,7 +80,7 @@ const Comments = ({
             {isPostingComment ? 'Commenting...' : 'Comment'}
           </button>
         </form>
-      </div>
+      </div>}
     </div>
   );
 };

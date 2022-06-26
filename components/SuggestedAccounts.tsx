@@ -7,18 +7,18 @@ import { GoVerified } from 'react-icons/go';
 import { IUser } from '../types';
 
 interface IProps {
-  fetchSuggestedAccounts: () => void;
-  suggestedAccounts: IUser[];
+  fetchAllUsers: () => void;
+  allUsers: IUser[];
 }
 
-const SuggestedAccounts: NextPage<IProps> = ({ fetchSuggestedAccounts, suggestedAccounts }) => {
+const SuggestedAccounts: NextPage<IProps> = ({ fetchAllUsers, allUsers }) => {
   useEffect(() => {
-    fetchSuggestedAccounts();
-  }, [fetchSuggestedAccounts]);
+    fetchAllUsers();
+  }, [fetchAllUsers]);
 
-  const users = suggestedAccounts
+  const users = allUsers
     .sort(() => 0.5 - Math.random())
-    .slice(0, suggestedAccounts.length);
+    .slice(0, allUsers.length);
 
   return (
     <div className='xl:border-b-2 border-gray-200 pb-4'>
@@ -26,7 +26,7 @@ const SuggestedAccounts: NextPage<IProps> = ({ fetchSuggestedAccounts, suggested
         Suggested accounts
       </p>
       <div>
-        {users?.slice(0, 6).map((user: any) => (
+        {users?.slice(0, 6).map((user: IUser) => (
           <Link href={`/profile/${user._id}`} key={user._id}>
             <div className='flex gap-3 hover:bg-primary p-2 cursor-pointer font-semibold rounded'>
               <div className='w-8 h-8'>

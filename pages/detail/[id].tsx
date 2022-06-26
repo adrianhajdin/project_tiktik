@@ -6,13 +6,12 @@ import Link from 'next/link';
 import { MdOutlineCancel } from 'react-icons/md';
 import { BsFillPlayFill } from 'react-icons/bs';
 import { HiVolumeUp, HiVolumeOff } from 'react-icons/hi';
-import toast from 'react-hot-toast';
 
 import Comments from '../../components/Comments';
 import { BASE_URL } from '../../utils';
-import LikeComment from '../../components/LikeComment';
+import LikeButton from '../../components/LikeButton';
 import useAuthStore from '../../store/authStore';
-import { IUser, Video } from '../../types';
+import { Video } from '../../types';
 import axios from 'axios';
 
 interface IProps {
@@ -21,53 +20,40 @@ interface IProps {
 
 const Detail = ({ postDetails }: IProps) => {
   const [post, setPost] = useState(postDetails);
-  const [isPlaying, setIsPlaying] = useState<Boolean>(false);
-  const [isVideoMuted, setIsVideoMuted] = useState<Boolean>(false);
-  const [isPostingComment, setIsPostingComment] = useState<Boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isVideoMuted, setIsVideoMuted] = useState<boolean>(false);
+  const [isPostingComment, setIsPostingComment] = useState<boolean>(false);
   const [comment, setComment] = useState<string>('');
 
-  const videoRef = useRef<any>();
+  const videoRef = useRef<HTMLVideoElement>(null);
   const router = useRouter();
 
   const { userProfile }: any = useAuthStore();
 
   const onVideoClick = () => {
     if (isPlaying) {
-      videoRef.current.pause();
+      videoRef?.current?.pause();
       setIsPlaying(false);
     } else {
-      videoRef.current.play();
+      videoRef?.current?.play();
       setIsPlaying(true);
     }
   };
 
   useEffect(() => {
-    if (post) {
+    if (post && videoRef?.current) {
       videoRef.current.muted = isVideoMuted;
     }
   }, [post, isVideoMuted]);
 
-  const handleLike = async () => {
+  const handleLike = async (like: boolean) => {
     if (userProfile) {
       const res = await axios.put(`${BASE_URL}/api/like`, {
         userId: userProfile.googleId,
         postId: post._id,
+        like
       });
       setPost({ ...post, likes: res.data.likes });
-    } else {
-      toast.error(' Please Log in to like and comment on videos.');
-    }
-  };
-
-  const handleDislike = async () => {
-    if (userProfile) {
-      const res = await axios.put(`${BASE_URL}/api/dislike`, {
-        userId: userProfile.googleId,
-        postId: post._id,
-      });
-      setPost({ ...post, likes: res.data.likes });
-    } else {
-      toast.error(' Please Log in to like and comment on videos.');
     }
   };
 
@@ -86,8 +72,6 @@ const Detail = ({ postDetails }: IProps) => {
         setComment('');
         setIsPostingComment(false);
       }
-    } else {
-      toast.error(' Please Log in to like and comment on videos.');
     }
   };
 
@@ -100,15 +84,6 @@ const Detail = ({ postDetails }: IProps) => {
               <p className='cursor-pointer ' onClick={() => router.back()}>
                 <MdOutlineCancel className='text-white text-[35px] hover:opacity-90' />
               </p>
-              <div className='mt-1'>
-                <Image
-                  width={26}
-                  height={26}
-                  className='rounded-full'
-                  src='https://cdn.pixabay.com/photo/2021/06/15/12/28/tiktok-6338431_1280.png'
-                  alt='logo'
-                />
-              </div>
             </div>
             <div className='relative'>
               <div className='lg:h-[100vh] h-[60vh]'>
@@ -165,14 +140,12 @@ const Detail = ({ postDetails }: IProps) => {
                 <p className=' text-md text-gray-600'>{post.caption}</p>
               </div>
               <div className='mt-10 px-10'>
-                <LikeComment
-                  id={post._id}
+                {userProfile && <LikeButton
                   likes={post.likes}
-                  comments={post.comments}
                   flex='flex'
-                  handleLike={handleLike}
-                  handleDislike={handleDislike}
-                />
+                  handleLike={() => handleLike(true)}
+                  handleDislike={() => handleLike(false)}
+                />}
               </div>
               <Comments
                 comment={comment}
