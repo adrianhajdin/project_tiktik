@@ -11,15 +11,10 @@
   "dependencies": {
     "@sanity/client": "^3.3.0",
     "axios": "^0.27.2",
-    "copy-to-clipboard": "^3.3.1",
-    "fs": "0.0.1-security",
-    "multer": "^1.4.5-lts.1",
     "next": "12.1.6",
-    "nice-react-ticker": "^2.0.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-google-login": "^5.2.2",
-    "react-hot-toast": "^2.2.0",
     "react-icons": "^4.3.1",
     "uuidv4": "^6.2.13",
     "zustand": "^4.0.0-rc.1"
