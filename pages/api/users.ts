@@ -4,9 +4,11 @@ import { allUsersQuery } from './../../utils/queries';
 import { client } from '../../utils/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const doc = req.body;
-
-  client.createIfNotExists(doc).then(() => {
-    res.status(200).json('Login successful');
-  });
+  const data = await client.fetch(allUsersQuery());
+  
+  if(data) {
+    res.status(200).json(data);
+  } else {
+    res.json([]);
+  }
 }
