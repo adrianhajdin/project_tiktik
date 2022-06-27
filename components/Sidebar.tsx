@@ -67,7 +67,6 @@ const Sidebar: NextPage = () => {
               </div>
             </div>
           )}
-
           <Discover />
           <SuggestedAccounts
             fetchAllUsers={fetchAllUsers}
