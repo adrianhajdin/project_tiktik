@@ -24,7 +24,7 @@ export const allPostsQuery = () => {
       image
     },
     }
-  } `;
+  }`;
 
   return query;
 };
