@@ -115,8 +115,14 @@ const Navbar = () => {
                   Log in
                 </button>
               )}
-              onSuccess={(res) => fetchGoogleResponse(res, addUser)}
-              onFailure={(res) => fetchGoogleResponse(res, addUser)}
+              onSuccess={(res) => {
+                console.log(res, 1)
+                fetchGoogleResponse(res, addUser)
+              }}
+              onFailure={(res) => {
+                console.log(res, 1)
+                fetchGoogleResponse(res, addUser)
+              }}
               cookiePolicy='single_host_origin'
             />
           </div>
