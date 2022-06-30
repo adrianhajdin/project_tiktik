@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.2.6",
     "@sanity/client": "^3.3.0",
     "axios": "^0.27.2",
+    "gapi-script": "^1.2.0",
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0",

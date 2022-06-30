@@ -49,7 +49,7 @@ const Detail = ({ postDetails }: IProps) => {
   const handleLike = async (like: boolean) => {
     if (userProfile) {
       const res = await axios.put(`${BASE_URL}/api/like`, {
-        userId: userProfile.googleId,
+        userId: userProfile._id,
         postId: post._id,
         like
       });
@@ -64,7 +64,7 @@ const Detail = ({ postDetails }: IProps) => {
       if (comment) {
         setIsPostingComment(true);
         const res = await axios.put(`${BASE_URL}/api/post/${post._id}`, {
-          userId: userProfile.googleId,
+          userId: userProfile._id,
           comment,
         });
 

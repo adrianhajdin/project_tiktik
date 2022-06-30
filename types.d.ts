@@ -30,9 +30,8 @@ export interface Video {
 }
 
 export interface IUser {
-  googleId?: string;
-  _id?: string;
+  _id: string;
+  _type: string;
   userName: string;
-  image?: string | StaticImport;
-  imageUrl?: string;
+  image: string;
 }

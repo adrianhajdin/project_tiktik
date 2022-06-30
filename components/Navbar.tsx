@@ -2,23 +2,22 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { GoogleLogout, GoogleLogin } from 'react-google-login';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { BiSearch } from 'react-icons/bi';
 import { IoMdAdd } from 'react-icons/io';
+import { GoogleLogin, googleLogout  } from '@react-oauth/google';
 
 import useAuthStore from '../store/authStore';
 import { IUser } from '../types';
-import { fetchGoogleResponse } from '../utils';
+import { createOrGetUser } from '../utils';
 import Logo from '../utils/tiktik-logo.png';
 
 const Navbar = () => {
   const [user, setUser] = useState<IUser | null>();
   const [searchValue, setSearchValue] = useState('');
   const router = useRouter();
-
   const { userProfile, addUser, removeUser } = useAuthStore();
-
+  
   useEffect(() => {
     setUser(userProfile);
   }, [userProfile]);
@@ -72,12 +71,12 @@ const Navbar = () => {
                 <span className='hidden md:block'>Upload </span>
               </button>
             </Link>
-            {user?.imageUrl && (
-              <Link href={`/profile/${user?.googleId}`}>
+            {user.image && (
+              <Link href={`/profile/${user._id}`}>
                 <div>
                   <Image
                     className='rounded-full cursor-pointer'
-                    src={user.imageUrl}
+                    src={user.image}
                     alt='user'
                     width={40}
                     height={40}
@@ -85,47 +84,22 @@ const Navbar = () => {
                 </div>
               </Link>
             )}
-            <GoogleLogout
-              clientId={`${process.env.NEXT_PUBLIC_GOOGLE_API_TOKEN}`}
-              render={(renderProps) => (
-                <button
-                  type='button'
-                  className=' border-2 p-2 rounded-full cursor-pointer outline-none shadow-md'
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                >
-                  <AiOutlineLogout color='red' fontSize={21} />
-                </button>
-              )}
-              onLogoutSuccess={() => removeUser()}
-              // @ts-ignore
-              cookiePolicy='single_host_origin'
-            />
+              <button
+                type='button'
+                className=' border-2 p-2 rounded-full cursor-pointer outline-none shadow-md'
+                onClick={() => {
+                  googleLogout();
+                  removeUser();
+                }}
+              >
+                <AiOutlineLogout color='red' fontSize={21} />
+              </button>
           </div>
         ) : (
-          <div>
             <GoogleLogin
-              clientId={`${process.env.NEXT_PUBLIC_GOOGLE_API_TOKEN}`}
-              render={(renderProps) => (
-                <button
-                  className='bg-[#F51997] text-lg text-white font-semibold px-6 py-1 rounded-md outline-none'
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                >
-                  Log in
-                </button>
-              )}
-              onSuccess={(res) => {
-                console.log(res, 1)
-                fetchGoogleResponse(res, addUser)
-              }}
-              onFailure={(res) => {
-                console.log(res, 1)
-                fetchGoogleResponse(res, addUser)
-              }}
-              cookiePolicy='single_host_origin'
+              onSuccess={(response) => createOrGetUser(response, addUser)}
+              onError={() => console.log('Login Failed')}
             />
-          </div>
         )}
       </div>
     </div>

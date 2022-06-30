@@ -63,10 +63,10 @@ const Upload = () => {
             _ref: videoAsset?._id,
           },
         },
-        userId: userProfile?.googleId,
+        userId: userProfile?._id,
         postedBy: {
           _type: 'postedBy',
-          _ref: userProfile?.googleId,
+          _ref: userProfile?._id,
         },
         topic,
       };
