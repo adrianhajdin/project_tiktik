@@ -9,10 +9,10 @@ export const createOrGetUser = async (response: any, addUser: any) => {
     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
   }).join(''));
   
-  const { name, picture, jti } = JSON.parse(jsonPayload)
+  const { name, picture, sub } = JSON.parse(jsonPayload)
   
   const user = {
-    _id: jti,
+    _id: sub,
     _type: 'user',
     userName: name,
     image: picture,
