@@ -8,7 +8,7 @@ import NoResults from './NoResults';
 import { IUser } from '../types';
 
 interface IProps {
-  isPostingComment: Boolean;
+  isPostingComment: boolean;
   comment: string;
   setComment: Dispatch<SetStateAction<string>>;
   addComment: (e: React.FormEvent) => void;
